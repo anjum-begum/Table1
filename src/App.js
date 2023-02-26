@@ -1,38 +1,43 @@
-import axios from "axios";
-import { useEffect, useState } from "react";
+import { useEffect, useState } from "react"
+import './App.css';
+import axios from "axios"
+
 
 function App() {
-  const URL = "https://jsonplaceholder.typicode.com/posts";
-  const [data , getData] = useState([]);
+  const [data , setData] = useState([])
 
   useEffect(() => {
-    tableData();
+  axios.get("https://jsonplaceholder.typicode.com/posts").then(res => {
+    console.log("getting from", res.data)
+    setData(res.data)
+  }).catch(err => console.log(err))
   }, [])
 
-  const tableData = () => {
-    axios.get(URL).then((response) => {
-        console.log(response);
-      })
-  }
+  const arr = data.map((data, index) => {
+    return(
+    <tr>
+          <td>{data.id}</td>
+          <td>{data.title}</td>
+          <td>{data.body}</td>
+
+      </tr>
+    )
+  })
   return (
-    <div>
-      <h1>How Display API data in Table in React JS</h1
-      <tbody>
+    <div className="App">
+      <h1>How Display API data in Table in React JS</h1>
+      <table>
+        <thead>
         <tr>
-          <th>User ID</th>
           <th>ID</th>
           <th>Title</th>
-          <th>Descripation</th>
+          <th>BODY</th>
         </tr>
-        {data.length>0 && data.map((item, i) => (
-          <tr key={i}>
-            <td>{item.userId}</td>
-            <td>{item.id}</td>
-            <td>{item.title}</td>
-            <td>{item.body}</td>
-          </tr>
-        ))
-}
-</tbody>
+        </thead>
+{arr}
+
+</table>
 </div>
+);
+}
 export default App;
